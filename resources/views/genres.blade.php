@@ -11,8 +11,8 @@
 
     @foreach ($genres as $genre)
     <ul>
-        <li>ID: {{ $genre['id'] }}</li>
-        <li>Nama Genre: {{ $genre['name'] }}</li>
+        <li>{{ $genre['name'] }}</li>
+        <li>{{ $genre['description'] }}</li>
     </ul>
     @endforeach
 </body>

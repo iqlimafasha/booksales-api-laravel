@@ -7,31 +7,71 @@ use App\Models\Author;
 
 class AuthorController extends Controller
 {
-    // READ all authors
-    public function index()
+    private $authors;
+
+    public function __construct()
     {
         $authorModel = new Author();
-        $authors = $authorModel->getAuthors();
+        $this->authors = $authorModel->getAuthors();
+    }
+
+    // SHOW (ambil 1 data berdasarkan ID)
+    public function show($id)
+    {
+        $author = collect($this->authors)->firstWhere('id', $id);
+
+        if (!$author) {
+            return response()->json([
+                "success" => false,
+                "message" => "Author not found"
+            ], 404);
+        }
 
         return response()->json([
             "success" => true,
-            "message" => "Get all authors",
-            "data" => $authors
+            "data" => $author
         ], 200);
     }
 
-    // CREATE a new author (simulasi)
-    public function store(Request $request)
+    // UPDATE (ubah data author, simulasi)
+    public function update(Request $request, $id)
     {
-        $newAuthor = [
-            'id' => rand(100, 999), // simulasi ID
+        $author = collect($this->authors)->firstWhere('id', $id);
+
+        if (!$author) {
+            return response()->json([
+                "success" => false,
+                "message" => "Author not found"
+            ], 404);
+        }
+
+        $updated = [
+            'id' => $id,
             'name' => $request->name
         ];
 
         return response()->json([
             "success" => true,
-            "message" => "Author created successfully",
-            "data" => $newAuthor
-        ], 201);
+            "message" => "Author updated successfully (simulasi)",
+            "data" => $updated
+        ], 200);
+    }
+
+    // DESTROY (hapus author, simulasi)
+    public function destroy($id)
+    {
+        $author = collect($this->authors)->firstWhere('id', $id);
+
+        if (!$author) {
+            return response()->json([
+                "success" => false,
+                "message" => "Author not found"
+            ], 404);
+        }
+
+        return response()->json([
+            "success" => true,
+            "message" => "Author deleted successfully (simulasi)"
+        ], 200);
     }
 }
